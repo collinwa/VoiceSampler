@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from torch.nn import ModuleList, Tanh, Linear, MaxPool1d, Conv1d, LeakyReLU, BatchNorm1d, GRU
 
 def compute_mse(y_pred, y):
-  return (y_pred - y).pow(2).sum()
+    return (y_pred - y).pow(2).sum()
 
 
 class UNet(nn.Module):
@@ -158,14 +158,14 @@ class DoubleConvConcatAndDilate(nn.Module):
         return x
 
 class GRULayer(nn.Module):
-  def __init__(self, input_ch, bidirectional=True):
-    super(GRULayer, self).__init__()
-    self.gru = GRU(input_ch, input_ch // 2, bidirectional=bidirectional, batch_first=True)
+    def __init__(self, input_ch, bidirectional=True):
+        super(GRULayer, self).__init__()
+        self.gru = GRU(input_ch, input_ch // 2, bidirectional=bidirectional, batch_first=True)
     
-  def forward(self, x):
-    print(x.shape)
-    x = torch.transpose(x, 1, 2)
-    x, _ = self.gru(x)
-    x = torch.transpose(x, 1, 2)
+    def forward(self, x):
+        print(x.shape)
+        x = torch.transpose(x, 1, 2)
+        x, _ = self.gru(x)
+        x = torch.transpose(x, 1, 2)
 
-    return x
+        return x
