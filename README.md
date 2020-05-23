@@ -15,8 +15,8 @@ A machine learning based model developed to sample voices out of pop songs. Curr
 * Parallelize training across multiple GPUs using torch.DataParallel
 
 ### Model Development
-* ~~ Finish writing the U-Net ~~
-* ~~ Implement recurrent units ~~
+* ~~Finish writing the U-Net~~
+* ~~Implement recurrent units~~
 * Implement dropout to prevent overfitting
 * Use [Ax](https://ax.dev/docs/api.html) to tune model hyperparameters and fix convergence issues
 * Integrate a perceptual loss function into the model, instead of SSE
@@ -29,7 +29,7 @@ A machine learning based model developed to sample voices out of pop songs. Curr
 * Generative modeling using a pre-built wave-net model to overlay voices
 
 ### Data Acquisition
-* ~~ Get royalty free music ~~
-* ~~ Get a capella voices ~~
+* ~~Get royalty free music~~
+* ~~Get a capella voices~~
 * Get more a capella voices (optional)
 * Get more instrumentals (optional)
