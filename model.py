@@ -1,14 +1,14 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.nn import ModuleList, Tanh, Linear, MaxPool1d, Conv1d, LeakyReLU, BatchNorm1d
+from torch.nn import ModuleList, Tanh, Linear, MaxPool1d, Conv1d, LeakyReLU, BatchNorm1d, GRU
 
 def compute_mse(y_pred, y):
   return (y_pred - y).pow(2).sum()
 
 
 class UNet(nn.Module):
-    def __init__(self, depth=3, audio_ch = 2, ch_factor=2, relu_slope=0.01, kern_size=5, max_pool=2, eps=1e-05, momentum=0.1):
+    def __init__(self, depth=3, audio_ch = 2, ch_factor=2, relu_slope=0.01, kern_size=5, max_pool=2, eps=1e-05, momentum=0.1, gru=True):
         super(UNet, self).__init__()
 
         self.down_conv_dict = {'kern_size': kern_size, 
@@ -18,6 +18,7 @@ class UNet(nn.Module):
                                 'slope': relu_slope
                             }
         self.depth = depth
+        self.gru = gru
         self.ch_factor = ch_factor
         self.kern_size = kern_size
         self.max_pool = max_pool
@@ -36,6 +37,9 @@ class UNet(nn.Module):
         
         for i in range(0, depth):
             self.down_layers.append(DoubleConvAndPool( channels(self.first_channels, ch_factor, i), channels(self.first_channels, ch_factor, i + 1), **self.down_conv_dict))
+
+        if self.gru:
+            self.gru_layer = GRULayer( channels(self.first_channels, ch_factor, i + 1) )
 
         self.first_up = DoubleConvConcatAndDilate( channels(self.first_channels, ch_factor, i + 1), channels(self.first_channels, ch_factor, i), **self.down_conv_dict, use_skip=False)
 
@@ -58,6 +62,10 @@ class UNet(nn.Module):
             skip_list.append(x)
 
         print([t.shape for t in skip_list])
+        # apply recurrent unit
+ 
+        if self.gru:
+            x = self.gru_layer(x)
 
         # upsample 1 layer to match dimensions
         x = self.first_up(x)
@@ -149,3 +157,15 @@ class DoubleConvConcatAndDilate(nn.Module):
 
         return x
 
+class GRULayer(nn.Module):
+  def __init__(self, input_ch, bidirectional=True):
+    super(GRULayer, self).__init__()
+    self.gru = GRU(input_ch, input_ch // 2, bidirectional=bidirectional, batch_first=True)
+    
+  def forward(self, x):
+    print(x.shape)
+    x = torch.transpose(x, 1, 2)
+    x, _ = self.gru(x)
+    x = torch.transpose(x, 1, 2)
+
+    return x

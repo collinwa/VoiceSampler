@@ -16,6 +16,10 @@ if __name__ == '__main__':
     data_gen = MixVoiceData('gdrive/My Drive/mp3_instrumental/','gdrive/My Drive/mp3_singers/')
     for epoch in range(EPOCHS):
         for idx, (x, y) in enumerate(data_gen.generate_data()):
+            # skip training for samples that are too short
+            if (x is None) or (y is None):
+                continue
+
             x = np.expand_dims(x, axis=0)
             y = np.expand_dims(y, axis=0)
             x = torch.tensor(x).float()
