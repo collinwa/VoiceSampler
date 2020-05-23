@@ -32,7 +32,7 @@ def concat_raw_signal(singer, instrument):
     # min_value = min_value - (min_value % 32)
     
     # using full sequence length causes excessive RAM usage
-    min_value = 75600
+    min_value = 705600
 
     cut1 = singer[:min_value,:]
     cut2 = instrument[:min_value,:]
