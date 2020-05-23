@@ -16,12 +16,21 @@ def read(f, normalized=True):
 
 
 def concat_raw_signal(singer, instrument): 
+
+    CUTOFF_LENGTH = 44100 * 7
+
+    if singer.shape[0] < CUTOFF_LENGTH:
+        return None, None
+
+    singer = singer[CUTOFF_LENGTH:,:]
+ 
     min_value = singer.shape[0]
 
     if (singer.shape[0] > instrument.shape[0]):
         min_value = instrument.shape[0]
 
     min_value = min_value - (min_value % 32)
+ 
     cut1 = singer[:min_value,:]
     cut2 = instrument[:min_value,:]
     
