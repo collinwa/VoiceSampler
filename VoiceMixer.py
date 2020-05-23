@@ -38,4 +38,4 @@ class MixVoiceData():
                 self.fill_queues()
             for _ in range(self.cache_size):
                 singer = self.sing_queue.pop()
-                yield concat_raw_signal(self.inst_queue.pop(), singer), singer
+                yield concat_raw_signal(self.inst_queue.pop(), singer)

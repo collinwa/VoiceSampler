@@ -17,9 +17,12 @@ if __name__ == '__main__':
     for epoch in range(EPOCHS):
         for idx, (x, y) in enumerate(data_gen.generate_data()):
             x = np.expand_dims(x, axis=0)
+            y = np.expand_dims(y, axis=0)
             x = torch.tensor(x).float()
 
             x = torch.transpose(x, 1, 2)
+            y = torch.transpose(y, 1, 2)
+
             if torch.cuda.is_available():
                 x = x.to(device="cuda")
                 y = y.to(device="cuda")
