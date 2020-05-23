@@ -29,8 +29,11 @@ def concat_raw_signal(singer, instrument):
     if (singer.shape[0] > instrument.shape[0]):
         min_value = instrument.shape[0]
 
-    min_value = min_value - (min_value % 32)
- 
+    # min_value = min_value - (min_value % 32)
+    
+    # using full sequence length causes excessive RAM usage
+    min_value = 75600
+
     cut1 = singer[:min_value,:]
     cut2 = instrument[:min_value,:]
     
