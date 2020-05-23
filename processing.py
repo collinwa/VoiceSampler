@@ -28,4 +28,4 @@ def concat_raw_signal(singer, instrument):
     # just average out the normalized values
     new_signal = (4.0*cut1/5.0) + cut2/5.0
     # convert back into 16-bit signal
-    return np.array(new_signal, dtype=np.int16), np.array(cut1, dtype=np.int16)
+    return np.array(new_signal, dtype=np.float64), np.array(cut1, dtype=np.float64)
