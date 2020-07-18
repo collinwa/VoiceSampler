@@ -1,6 +1,6 @@
 from VoiceMixer import MixVoiceData
 from processing import *
-from model import *
+from u_net import *
 import torch
 import numpy as np
 
